@@ -36,6 +36,17 @@ Semua data disimpan dalam database SQLite lokal (`database.sqlite`) dan entitas 
 - `jest`
 - `supertest`
 
+## Mengapa menggunakan pola arsitektur NestJS ini
+
+Pola arsitektur NestJS pada proyek ini digunakan karena beberapa alasan penting:
+
+- `Modularitas`: setiap fitur utama seperti `auth`, `users`, dan `posts` berada di modul terpisah, sehingga kode lebih mudah dipelihara dan dikembangkan.
+- `Separation of Concerns`: controller hanya menangani permintaan HTTP, service menangani logika bisnis, dan entity menangani model data.
+- `Dependency Injection`: NestJS menyediakan container DI yang memudahkan pengujian, pemeliharaan, dan penggantian dependensi tanpa mengubah banyak kode.
+- `Scalability`: struktur ini memudahkan penambahan fitur baru seperti peran user, refresh token, atau layanan lain tanpa merusak bagian lain.
+- `Testing`: kode yang terpisah dalam controller/service/entity memudahkan penulisan tes unit dan integrasi.
+- `Best practices`: pendekatan ini mengikuti pola umum NestJS sehingga developer yang sudah familiar dengan NestJS dapat mempercepat adaptasi.
+
 ## Struktur folder penting
 
 - `src/app.module.ts` - konfigurasi root NestJS, termasuk TypeORM
