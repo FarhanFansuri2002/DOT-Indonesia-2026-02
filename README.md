@@ -1,6 +1,6 @@
-# API NestJS dengan MySQL dan Prisma
-
-Proyek ini adalah contoh aplikasi REST API sederhana menggunakan NestJS, Prisma, MySQL, dan otentikasi JWT.
+# Blog app API (NestJS dengan MySQL dan Prisma)
+ 
+Proyek ini adalah contoh aplikasi REST API management blog sederhana menggunakan NestJS, Prisma, MySQL, dan otentikasi JWT.
 
 ## Ringkasan
 
