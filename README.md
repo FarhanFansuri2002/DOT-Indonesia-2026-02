@@ -4,11 +4,7 @@ Proyek ini adalah contoh aplikasi REST API management blog sederhana menggunakan
 
 ## Pattern arsitektur: NestJS modular (Controller - Service - Module)
 
-Alasan penggunaan:
-
-- **Modularitas:** Memudahkan pemisahan fitur, maintenance, dan pengujian.
-- **Controller → Service → Database:** Memisahkan routing/HTTP dari logika bisnis dan akses data.
-- **Dependency Injection (DI):** Mempermudah penggantian implementasi (mis. Prisma) dan menulis unit test.
+Pattern arsitektur yang digunakan adalah NestJS modular, dengan pemisahan tanggung jawab melalui `Controller`, `Service`, dan modul-modul fitur. Pola ini dipilih karena memberikan modularitas yang memudahkan pemisahan fitur, perawatan, dan pengujian; memisahkan routing/HTTP dari logika bisnis dan akses data; serta memanfaatkan mekanisme Dependency Injection (DI) NestJS yang menyederhanakan penggantian implementasi (mis. Prisma) dan penulisan unit test.
 
 ## Ringkasan
 
