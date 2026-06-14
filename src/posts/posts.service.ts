@@ -1,30 +1,35 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import type { User } from '@prisma/client';
+import { PrismaService } from '../prisma/prisma.service';
 import { CreatePostDto } from './dto/create-post.dto';
-import { Post } from '../entities/post.entity';
-import { User } from '../entities/user.entity';
 
 @Injectable()
 export class PostsService {
-  constructor(
-    @InjectRepository(Post)
-    private readonly postRepository: Repository<Post>,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
-  async create(createPostDto: CreatePostDto, user: User): Promise<Post> {
-    const post = this.postRepository.create({ ...createPostDto, user });
-    return this.postRepository.save(post);
+  async create(createPostDto: CreatePostDto, user: User) {
+    return this.prisma.post.create({
+      data: {
+        title: createPostDto.title,
+        content: createPostDto.content,
+        user: {
+          connect: { id: user.id },
+        },
+      },
+      include: { user: true },
+    });
   }
 
-  async findAll(): Promise<Post[]> {
-    return this.postRepository.find({ relations: ['user'] });
+  async findAll() {
+    return this.prisma.post.findMany({
+      include: { user: true },
+    });
   }
 
-  async findByUser(userId: number): Promise<Post[]> {
-    return this.postRepository.find({
-      where: { user: { id: userId } },
-      relations: ['user'],
+  async findByUser(userId: number) {
+    return this.prisma.post.findMany({
+      where: { userId },
+      include: { user: true },
     });
   }
 }

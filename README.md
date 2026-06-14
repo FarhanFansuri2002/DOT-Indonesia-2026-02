@@ -1,6 +1,6 @@
-# API NestJS dengan SQL dan JWT
+# API NestJS dengan MySQL dan Prisma
 
-Proyek ini adalah contoh aplikasi REST API sederhana menggunakan NestJS, TypeORM, SQLite, dan otentikasi JWT.
+Proyek ini adalah contoh aplikasi REST API sederhana menggunakan NestJS, Prisma, MySQL, dan otentikasi JWT.
 
 ## Ringkasan
 
@@ -12,15 +12,16 @@ Aplikasi menyediakan endpoint untuk:
 - membuat dan menampilkan post yang terkait dengan user
 - hanya user yang terautentikasi dapat mengakses data yang dilindungi
 
-Semua data disimpan dalam database SQLite lokal (`database.sqlite`) dan entitas utama adalah `User` dan `Post`.
+Semua data disimpan dalam database MySQL dengan model utama `User` dan `Post`.
 
 ## Fitur utama
 
 - Otentikasi JWT dengan `@nestjs/jwt` dan `passport-jwt`
-- Database SQLite menggunakan `TypeORM`
+- Database MySQL menggunakan Prisma ORM
 - Validasi request payload menggunakan `class-validator`
 - Proteksi route dengan `AuthGuard('jwt')`
 - Struktur modul NestJS terpisah untuk `auth`, `users`, dan `posts`
+- Dokumentasi API otomatis dengan Swagger/OpenAPI
 - Tes end-to-end dengan `jest` dan `supertest`
 
 ## Teknologi yang digunakan
@@ -28,33 +29,23 @@ Semua data disimpan dalam database SQLite lokal (`database.sqlite`) dan entitas 
 - `Node.js`
 - `NestJS`
 - `TypeScript`
-- `TypeORM`
-- `SQLite`
+- `Prisma`
+- `MySQL`
 - `JWT`
+- `Swagger/OpenAPI`
 - `class-validator`
 - `passport`
 - `jest`
 - `supertest`
 
-## Mengapa menggunakan pola arsitektur NestJS ini
-
-Pola arsitektur NestJS pada proyek ini digunakan karena beberapa alasan penting:
-
-- `Modularitas`: setiap fitur utama seperti `auth`, `users`, dan `posts` berada di modul terpisah, sehingga kode lebih mudah dipelihara dan dikembangkan.
-- `Separation of Concerns`: controller hanya menangani permintaan HTTP, service menangani logika bisnis, dan entity menangani model data.
-- `Dependency Injection`: NestJS menyediakan container DI yang memudahkan pengujian, pemeliharaan, dan penggantian dependensi tanpa mengubah banyak kode.
-- `Scalability`: struktur ini memudahkan penambahan fitur baru seperti peran user, refresh token, atau layanan lain tanpa merusak bagian lain.
-- `Testing`: kode yang terpisah dalam controller/service/entity memudahkan penulisan tes unit dan integrasi.
-- `Best practices`: pendekatan ini mengikuti pola umum NestJS sehingga developer yang sudah familiar dengan NestJS dapat mempercepat adaptasi.
-
 ## Struktur folder penting
 
-- `src/app.module.ts` - konfigurasi root NestJS, termasuk TypeORM
+- `src/app.module.ts` - konfigurasi root NestJS, termasuk Prisma dan env
 - `src/main.ts` - entry point aplikasi
 - `src/auth` - modul autentikasi JWT
 - `src/users` - modul registrasi dan daftar user
 - `src/posts` - modul buat dan ambil post
-- `src/entities` - definisi model database untuk `User` dan `Post`
+- `src/prisma` - konfigurasi Prisma dan provider `PrismaService`
 - `test` - tes end-to-end
 
 ## Instalasi
@@ -65,28 +56,68 @@ Pola arsitektur NestJS pada proyek ini digunakan karena beberapa alasan penting:
 npm install
 ```
 
-2. Jalankan aplikasi dalam mode pengembangan:
+2. Buat file `.env` dengan URL koneksi MySQL:
+
+```text
+DATABASE_URL="mysql://root:password@localhost:3306/nestjs"
+```
+
+3. Hasilkan client Prisma dan sinkronkan skema:
+
+```bash
+npx prisma generate
+npx prisma db push
+```
+
+4. Jalankan aplikasi dalam mode pengembangan:
 
 ```bash
 npm run start:dev
 ```
 
-3. Buka browser atau API client di:
+5. Buka browser atau API client di:
 
 ```text
 http://localhost:3000
 ```
 
+## Dokumentasi API dengan Swagger
+
+Aplikasi ini dilengkapi dengan dokumentasi API interaktif menggunakan Swagger/OpenAPI.
+
+Setelah aplikasi berjalan, buka dokumentasi Swagger di:
+
+```text
+http://localhost:3000/api
+```
+
+Di halaman Swagger, Anda dapat:
+
+- Melihat semua endpoint API yang tersedia
+- Membaca deskripsi dan parameter setiap endpoint
+- Mencoba endpoint langsung dari UI (terutama berguna dengan token JWT)
+- Melihat format response dan error handling
+
+**Menggunakan token JWT di Swagger:**
+
+1. Daftar user baru melalui endpoint `POST /users`
+2. Login melalui endpoint `POST /auth/login`
+3. Salin token JWT dari response
+4. Klik tombol **Authorize** di halaman Swagger
+5. Masukkan token dengan format: `Bearer <your_jwt_token>`
+6. Sekarang Anda bisa mencoba endpoint yang memerlukan autentikasi
+
 ## Konfigurasi database
 
-Aplikasi menggunakan SQLite dan konfigurasi TypeORM disiapkan di `src/app.module.ts`:
+Aplikasi sekarang menggunakan MySQL melalui Prisma. Koneksi dikonfigurasi dari env var `DATABASE_URL`.
 
-- `type: 'sqlite'`
-- `database: 'database.sqlite'`
-- `entities: [User, Post]`
-- `synchronize: true`
+Contoh `DATABASE_URL`:
 
-> `synchronize: true` berarti TypeORM akan membuat/memperbarui skema database secara otomatis. Gunakan hanya untuk pengembangan.
+```text
+mysql://root:password@localhost:3306/nestjs
+```
+
+> Pastikan MySQL berjalan dan database tujuan sudah dibuat atau dapat dibuat oleh Prisma.
 
 ## Konfigurasi JWT
 
@@ -184,7 +215,7 @@ Authorization: Bearer <jwt_token>
 - `UsersController` menyediakan endpoint pendaftaran user dan daftar user.
 - `AuthController` menyediakan endpoint login JWT.
 - `PostsController` melindungi semua route dengan `AuthGuard('jwt')`.
-- `PostsService` dapat menampilkan post berdasarkan user yang login.
+- `PostsService` menulis dan membaca data post menggunakan Prisma.
 - `AuthService` memvalidasi username/password dengan data dari `UsersService`.
 
 ## Menjalankan tes
@@ -198,8 +229,11 @@ Tes ini sudah menggunakan konfigurasi di `test/jest-e2e.json` untuk memastikan e
 ## Catatan penting
 
 - Password saat ini disimpan dalam bentuk plaintext di database. Ini hanya untuk contoh demo.
+- Untuk produksi, gunakan hashing password yang aman dan manajemen secret JWT yang tepat.
+
 - Untuk aplikasi nyata, gunakan hashing password seperti `bcrypt` dan simpan secret JWT di environment variable.
-- Pastikan `database.sqlite` ditambahkan ke `.gitignore` jika tidak ingin menyimpan file database di repository.
+- Pastikan file `.env` tidak dikomit ke repository dan gunakan `.env.example` sebagai template konfigurasi.
+- Gunakan Prisma Migrate atau backup database ketika memindahkan schema di lingkungan produksi.
 
 ## Cara mengembangkan lebih lanjut
 
@@ -207,4 +241,4 @@ Tes ini sudah menggunakan konfigurasi di `test/jest-e2e.json` untuk memastikan e
 - Tambahkan refresh token untuk otentikasi JWT yang lebih baik
 - Tambahkan pagination pada endpoint post
 - Tambahkan peran user (`role`) untuk membatasi akses
-- Ganti SQLite dengan PostgreSQL / MySQL untuk produksi
+- Tambahkan migrasi Prisma untuk perubahan schema produksi

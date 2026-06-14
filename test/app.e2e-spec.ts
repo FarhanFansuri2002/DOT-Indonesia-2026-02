@@ -18,7 +18,7 @@ describe('Auth API (e2e)', () => {
   });
 
   it('should register user, login, and access protected route', async () => {
-    const user = { username: 'testuser', password: 'test123' };
+    const user = { username: 'testuser2', password: 'test1232' };
 
     await request(app.getHttpServer()).post('/users').send(user).expect(201);
 
