@@ -235,10 +235,3 @@ Tes ini sudah menggunakan konfigurasi di `test/jest-e2e.json` untuk memastikan e
 - Pastikan file `.env` tidak dikomit ke repository dan gunakan `.env.example` sebagai template konfigurasi.
 - Gunakan Prisma Migrate atau backup database ketika memindahkan schema di lingkungan produksi.
 
-## Cara mengembangkan lebih lanjut
-
-- Tambahkan hashing password sebelum menyimpan user
-- Tambahkan refresh token untuk otentikasi JWT yang lebih baik
-- Tambahkan pagination pada endpoint post
-- Tambahkan peran user (`role`) untuk membatasi akses
-- Tambahkan migrasi Prisma untuk perubahan schema produksi
