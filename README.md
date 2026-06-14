@@ -2,6 +2,14 @@
  
 Proyek ini adalah contoh aplikasi REST API management blog sederhana menggunakan NestJS, Prisma, MySQL, dan otentikasi JWT.
 
+## Pattern arsitektur: NestJS modular (Controller - Service - Module)
+
+Alasan penggunaan:
+
+- **Modularitas:** Memudahkan pemisahan fitur, maintenance, dan pengujian.
+- **Controller → Service → Database:** Memisahkan routing/HTTP dari logika bisnis dan akses data.
+- **Dependency Injection (DI):** Mempermudah penggantian implementasi (mis. Prisma) dan menulis unit test.
+
 ## Ringkasan
 
 Aplikasi menyediakan endpoint untuk:
