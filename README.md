@@ -229,9 +229,8 @@ Tes ini sudah menggunakan konfigurasi di `test/jest-e2e.json` untuk memastikan e
 ## Catatan penting
 
 - Password saat ini disimpan dalam bentuk plaintext di database. Ini hanya untuk contoh demo.
-- Untuk produksi, gunakan hashing password yang aman dan manajemen secret JWT yang tepat.
 
-- Untuk aplikasi nyata, gunakan hashing password seperti `bcrypt` dan simpan secret JWT di environment variable.
-- Pastikan file `.env` tidak dikomit ke repository dan gunakan `.env.example` sebagai template konfigurasi.
-- Gunakan Prisma Migrate atau backup database ketika memindahkan schema di lingkungan produksi.
+- Untuk production, dapat menggunakan hashing password seperti `bcrypt` dan simpan secret JWT di environment variable.
+- File `.env` tidak dikomit ke repository. Namun bisa menggunakan `.env.example` sebagai template konfigurasi.
+- Gunakan Prisma Migrate atau backup database ketika memindahkan schema di production.
 
