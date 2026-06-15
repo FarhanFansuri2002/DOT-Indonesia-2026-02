@@ -214,6 +214,79 @@ Authorization: Bearer <jwt_token>
 
 - Response: daftar semua user beserta post mereka
 
+### 6. Ambil detail post berdasarkan ID
+
+- Endpoint: `GET /posts/{id}`
+- Header:
+
+```text
+Authorization: Bearer <jwt_token>
+```
+
+- Response: detail post dengan data user terkait
+
+### 7. Perbarui post
+
+- Endpoint: `PATCH /posts/{id}`
+- Header:
+
+```text
+Authorization: Bearer <jwt_token>
+```
+
+- Request body (opsional satu atau kedua field):
+
+```json
+{
+  "title": "Judul baru",
+  "content": "Isi konten diperbarui"
+}
+```
+
+- Response: data post yang diperbarui
+
+### 8. Hapus post
+
+- Endpoint: `DELETE /posts/{id}`
+- Header:
+
+```text
+Authorization: Bearer <jwt_token>
+```
+
+- Response: data post yang berhasil dihapus
+
+### 9. Perbarui user
+
+- Endpoint: `PATCH /users/{id}`
+- Header:
+
+```text
+Authorization: Bearer <jwt_token>
+```
+
+- Request body (opsional satu atau kedua field):
+
+```json
+{
+  "username": "nama_baru",
+  "password": "passwordBaru123"
+}
+```
+
+- Response: data user yang diperbarui
+
+### 10. Hapus user
+
+- Endpoint: `DELETE /users/{id}`
+- Header:
+
+```text
+Authorization: Bearer <jwt_token>
+```
+
+- Response: data user yang berhasil dihapus
+
 ## Detail implementasi
 
 - `UsersController` menyediakan endpoint pendaftaran user dan daftar user.
